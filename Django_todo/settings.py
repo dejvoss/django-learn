@@ -14,8 +14,13 @@ from pathlib import Path
 import os
 import dj_database_url
 
+# ------------ Set environmental variables in to env.py file and in heroku app settings
+# ------------ if path exist then take envrionmental variables fro env.py file
 if os.path.exists("env.py"):
     import env
+# ----------- create development variable, which is taking the status from env.py variable or is False
+# ----------- locally will be true, on heroku will be false
+development = os.environ.get('DEVELOPMENT', False)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,10 +33,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# ---------- instead of setting here true or false we set development
+# ---------- this will give us true or false depend if is local server or heroku
+DEBUG = development
 
-ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
-
+# ---------- also create here statement to select correct hostname
+if development:
+    ALLOWED_HOSTS = [os.environ.get('DEVELOP_HOSTNAME')]
+else:
+    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 # Application definition
 
@@ -79,17 +89,18 @@ WSGI_APPLICATION = 'Django_todo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
-}
+# ------------- create statement to connect to database depend ov development status
+if development:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
