@@ -27,7 +27,7 @@ SECRET_KEY = '&p#l^g+8q+2$_r!vwgi%fw353_o8$_5ghi4v!w!0nd+!5__$ct'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [cds-dng-todo.herokuapp.com]
+ALLOWED_HOSTS = ['cds-dng-todo.herokuapp.com']
 
 
 # Application definition
