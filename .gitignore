@@ -1,5 +1,6 @@
 notebook.txt
-/Django_todo/__pycache__
+*.sqlite3
+Django_todo/__pycache__
 env.py
 __pycache__
 __pycache__
